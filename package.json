@@ -7,7 +7,7 @@
     "dev": "ts-node src/ts2famix-cli.ts",
     "debug": "node --inspect-brk node_modules/.bin/ts-node",
     "build": "tsc",
-    "test": "jest --colors",
+    "test": "jest --colors --silent",
     "local": "sudo npm i -g && ts2famix",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
   },
@@ -34,6 +34,7 @@
   "dependencies": {
     "nodegit": "^0.27.0",
     "ts-morph": "^12.0.0",
+    "tsutils": "^3.21.0",
     "yargs": "^17.2.1"
   }
 }

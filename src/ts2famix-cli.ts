@@ -9,7 +9,7 @@ const LATEST_COMMIT = 'latest'
 
 const argv = yargs
     .example('$0 -i ../myTypescriptProject -o myTypeScriptProject.json', 'creates JSON-format model of typescript project')
-    .example('$0 -u https://github.com/microsoft/vscode.git -c fbdc009642ceffecb5f69a3bfdc78dd1124d64b5 -c 884273e35b35404e99e4787af0b026119e2a24dc', 'creates JSON-format model of typescript project')
+    .example('$0 -u https://github.com/microsoft/vscode.git -i "src/**/*.ts" -c fbdc009642ceffecb5f69a3bfdc78dd1124d64b5 -c 884273e35b35404e99e4787af0b026119e2a24dc', 'creates JSON-format model of typescript project')
     .alias('i', 'input')
     .alias('o', 'output')
     .alias('u', 'url')
@@ -75,3 +75,4 @@ async function cloneRepo(link: string, target: string){
     console.log("Downloading repo");
     return git.Clone(link, target)
 }
+
