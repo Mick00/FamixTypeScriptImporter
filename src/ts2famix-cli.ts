@@ -1,7 +1,7 @@
 import * as fs from "fs"
 import yargs, { Argv, exit } from "yargs";
 import { TS2Famix } from "./ts2famix";
-import git from "nodegit";
+import gitFactory from "simple-git";
 
 const JSON_MODEL_DIRECTOY = './JSONModels/';
 const REPOS_DIRECTORY = './repos/';
@@ -26,7 +26,7 @@ let commits = argv.commit as string[];
 let importation: Promise<string[]>;
 if (url){
     importation = processFromGit(url, commits, [input]);
-} else{
+} else {
     importation = Promise.resolve([process([input], output)])
 }
 
@@ -54,7 +54,7 @@ async function processFromGit(link: string, commits: string[], inputs: string[])
     for(let commitSHA of commits){
         if (commitSHA !== LATEST_COMMIT){
             console.info("Checking out commit", commitSHA)
-            const commit = repo.getCommit(commitSHA);
+            const commit = repo.checkout(commitSHA);
         }
         const output = await process(inputs.map(input => `${projectDir}/${input}`), `${projectName}-${commitSHA}`);
         outputs.push(output);
@@ -68,11 +68,11 @@ function getProjectName(link: string){
 }
 
 async function cloneRepo(link: string, target: string){
-    if(fs.existsSync(target)){
-        console.log("Repo already exists");
-        return git.Repository.open(target);
+    const repo = gitFactory(target);
+    if(!fs.existsSync(target)){
+        console.log("Downloading repo");
+        await repo.clone(link, target);
     }
-    console.log("Downloading repo");
-    return git.Clone(link, target)
+    return repo;
 }
 
